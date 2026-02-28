@@ -12,7 +12,7 @@ const notificationsRouter = require('./routes/notifications');
 
 const app = express();
 
-app.use(cors({ origin: config.server.frontendUrl }));
+app.use(cors({ origin: true }));
 app.use(express.json());
 
 // API Routes
