@@ -68,65 +68,65 @@ export default function AlertDetail() {
 
   return (
     <div>
-      <button onClick={() => navigate('/')} className="flex items-center gap-2 mb-8 text-sm font-medium transition-colors animate-fade-up" style={{ color: 'var(--color-muted)' }} onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--color-ink)')} onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--color-muted)')}>
+      <button onClick={() => navigate('/')} className="flex items-center gap-2 mb-6 sm:mb-8 text-sm font-medium transition-colors animate-fade-up" style={{ color: 'var(--color-muted)' }} onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--color-ink)')} onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--color-muted)')}>
         <ArrowLeft className="w-4 h-4" /> Voltar
       </button>
 
-      <div className="mb-8 animate-fade-up stagger-1">
-        <h1 className="font-display text-3xl tracking-tight mb-1" style={{ color: 'var(--color-ink)' }}>
+      <div className="mb-6 sm:mb-8 animate-fade-up stagger-1">
+        <h1 className="font-display text-2xl sm:text-3xl tracking-tight mb-1" style={{ color: 'var(--color-ink)' }}>
           {alert.origin_display_code || alert.origin_name}
-          <span className="mx-3" style={{ color: 'var(--color-muted)' }}>—</span>
+          <span className="mx-2 sm:mx-3" style={{ color: 'var(--color-muted)' }}>—</span>
           {alert.dest_display_code || alert.dest_name}
         </h1>
         <p className="text-sm" style={{ color: 'var(--color-ink-soft)' }}>{alert.origin_name} para {alert.dest_name}</p>
-        <div className="flex items-center gap-5 mt-3 text-sm" style={{ color: 'var(--color-muted)' }}>
+        <div className="flex flex-wrap items-center gap-3 sm:gap-5 mt-3 text-xs sm:text-sm" style={{ color: 'var(--color-muted)' }}>
           <span className="flex items-center gap-1.5"><Calendar className="w-3.5 h-3.5" />{formatDate(alert.depart_date)}{alert.return_date ? ` — ${formatDate(alert.return_date)}` : ' (somente ida)'}</span>
           <span className="flex items-center gap-1.5"><Users className="w-3.5 h-3.5" />{alert.passengers} pax · {cabinLabels[alert.cabin_class] || alert.cabin_class}</span>
         </div>
       </div>
 
-      <div className="grid grid-cols-3 gap-4 mb-8 animate-fade-up stagger-2">
-        <div className="card p-5">
-          <div className="text-xs uppercase tracking-wider font-semibold mb-2" style={{ color: 'var(--color-muted)', letterSpacing: '0.08em' }}>Atual</div>
-          <div className="font-display text-2xl" style={{ color: 'var(--color-ink)' }}>{formatPrice(alert.current_price)}</div>
+      <div className="grid grid-cols-3 gap-3 sm:gap-4 mb-6 sm:mb-8 animate-fade-up stagger-2">
+        <div className="card p-4 sm:p-5">
+          <div className="text-[10px] sm:text-xs uppercase tracking-wider font-semibold mb-1.5 sm:mb-2" style={{ color: 'var(--color-muted)', letterSpacing: '0.08em' }}>Atual</div>
+          <div className="font-display text-lg sm:text-2xl" style={{ color: 'var(--color-ink)' }}>{formatPrice(alert.current_price)}</div>
         </div>
-        <div className="card p-5" style={{ borderColor: 'var(--color-blue-light)', background: 'var(--color-blue-wash)' }}>
-          <div className="text-xs uppercase tracking-wider font-semibold mb-2 flex items-center gap-1.5" style={{ color: 'var(--color-blue)', letterSpacing: '0.08em' }}>
+        <div className="card p-4 sm:p-5" style={{ borderColor: 'var(--color-rose-light)', background: 'var(--color-rose-wash)' }}>
+          <div className="text-[10px] sm:text-xs uppercase tracking-wider font-semibold mb-1.5 sm:mb-2 flex items-center gap-1.5" style={{ color: 'var(--color-rose)', letterSpacing: '0.08em' }}>
             Alvo
-            {!editingTarget && <button onClick={() => { setNewTarget(alert.target_price.toString()); setEditingTarget(true); }} style={{ color: 'var(--color-blue-light)' }}><Edit3 className="w-3 h-3" /></button>}
+            {!editingTarget && <button onClick={() => { setNewTarget(alert.target_price.toString()); setEditingTarget(true); }} style={{ color: 'var(--color-rose-light)' }}><Edit3 className="w-3 h-3" /></button>}
           </div>
           {editingTarget ? (
-            <div className="flex items-center gap-2">
-              <span className="font-display" style={{ color: 'var(--color-muted)' }}>R$</span>
-              <input type="number" value={newTarget} onChange={(e) => setNewTarget(e.target.value)} className="input-field font-display text-lg py-1 px-2 w-28" autoFocus />
-              <button onClick={handleSaveTarget} className="text-emerald-600 hover:text-emerald-800"><Check className="w-5 h-5" /></button>
-              <button onClick={() => setEditingTarget(false)} style={{ color: 'var(--color-muted)' }}><X className="w-5 h-5" /></button>
+            <div className="flex items-center gap-1.5 sm:gap-2">
+              <span className="font-display text-sm" style={{ color: 'var(--color-muted)' }}>R$</span>
+              <input type="number" value={newTarget} onChange={(e) => setNewTarget(e.target.value)} className="input-field font-display text-base sm:text-lg py-1 px-2 w-20 sm:w-28" autoFocus />
+              <button onClick={handleSaveTarget} className="text-emerald-600"><Check className="w-4 sm:w-5 h-4 sm:h-5" /></button>
+              <button onClick={() => setEditingTarget(false)} style={{ color: 'var(--color-muted)' }}><X className="w-4 sm:w-5 h-4 sm:h-5" /></button>
             </div>
           ) : (
-            <div className="font-display text-2xl" style={{ color: 'var(--color-blue)' }}>{formatPrice(alert.target_price)}</div>
+            <div className="font-display text-lg sm:text-2xl" style={{ color: 'var(--color-rose)' }}>{formatPrice(alert.target_price)}</div>
           )}
         </div>
-        <div className="card p-5" style={{ borderColor: 'var(--color-green)', background: 'var(--color-green-soft)' }}>
-          <div className="text-xs uppercase tracking-wider font-semibold mb-2" style={{ color: 'var(--color-green)', letterSpacing: '0.08em' }}>Menor</div>
-          <div className="font-display text-2xl" style={{ color: 'var(--color-green)' }}>{formatPrice(alert.lowest_price)}</div>
+        <div className="card p-4 sm:p-5" style={{ borderColor: 'var(--color-green)', background: 'var(--color-green-soft)' }}>
+          <div className="text-[10px] sm:text-xs uppercase tracking-wider font-semibold mb-1.5 sm:mb-2" style={{ color: 'var(--color-green)', letterSpacing: '0.08em' }}>Menor</div>
+          <div className="font-display text-lg sm:text-2xl" style={{ color: 'var(--color-green)' }}>{formatPrice(alert.lowest_price)}</div>
         </div>
       </div>
 
-      <div className="flex items-center gap-3 mb-8 animate-fade-up stagger-3">
+      <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-6 sm:mb-8 animate-fade-up stagger-3">
         <button onClick={handleCheck} disabled={checking} className="btn-primary flex items-center gap-2 text-sm">
           <RefreshCw className={`w-4 h-4 ${checking ? 'animate-spin' : ''}`} /> Verificar Agora
         </button>
         <button onClick={handleExport} className="btn-ghost flex items-center gap-2 text-sm"><Download className="w-4 h-4" /> CSV</button>
-        <button onClick={handleDelete} className="btn-ghost flex items-center gap-2 text-sm ml-auto" style={{ color: 'var(--color-red)', borderColor: 'transparent' }}><Trash2 className="w-4 h-4" /> Deletar</button>
+        <button onClick={handleDelete} className="btn-ghost flex items-center gap-2 text-sm sm:ml-auto" style={{ color: 'var(--color-red)', borderColor: 'transparent' }}><Trash2 className="w-4 h-4" /> Deletar</button>
       </div>
 
-      <div className="card p-6 mb-6 animate-fade-up stagger-4">
-        <h2 className="font-display text-lg mb-5" style={{ color: 'var(--color-ink)' }}>Evolucao do preco</h2>
+      <div className="card p-4 sm:p-6 mb-5 sm:mb-6 animate-fade-up stagger-4">
+        <h2 className="font-display text-lg mb-4 sm:mb-5" style={{ color: 'var(--color-ink)' }}>Evolucao do preco</h2>
         <PriceChart priceHistory={priceHistory} targetPrice={alert.target_price} />
       </div>
 
-      <div className="card p-6 animate-fade-up stagger-5">
-        <h2 className="font-display text-lg mb-5" style={{ color: 'var(--color-ink)' }}>Historico de checagens</h2>
+      <div className="card p-4 sm:p-6 animate-fade-up stagger-5 mb-6">
+        <h2 className="font-display text-lg mb-4 sm:mb-5" style={{ color: 'var(--color-ink)' }}>Historico de checagens</h2>
         <PriceHistoryTable history={priceHistory} />
       </div>
     </div>

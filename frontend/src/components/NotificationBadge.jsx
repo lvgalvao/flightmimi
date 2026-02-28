@@ -51,7 +51,7 @@ export default function NotificationBadge() {
       >
         <Bell className="w-5 h-5" style={{ color: 'var(--color-ink-soft)' }} />
         {unreadCount > 0 && (
-          <span className="absolute -top-0.5 -right-0.5 text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-bold" style={{ background: 'var(--color-blue)' }}>
+          <span className="absolute -top-0.5 -right-0.5 text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-bold" style={{ background: 'var(--color-rose)' }}>
             {unreadCount}
           </span>
         )}

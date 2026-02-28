@@ -1,10 +1,10 @@
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, Calendar, TrendingDown, TrendingUp, Pause, Trash2, Play, Bell, Users } from 'lucide-react';
+import { ArrowRight, Calendar, TrendingDown, TrendingUp, Pause, Trash2, Play, Users } from 'lucide-react';
 import SparklineChart from './SparklineChart';
 import api from '../services/api';
 
 const STATUS_CONFIG = {
-  active: { dot: 'var(--color-blue)', label: 'Monitorando', labelColor: 'var(--color-blue)' },
+  active: { dot: 'var(--color-rose)', label: 'Monitorando', labelColor: 'var(--color-rose)' },
   triggered: { dot: 'var(--color-green)', label: 'Preco atingido!', labelColor: 'var(--color-green)' },
   paused: { dot: 'var(--color-muted)', label: 'Pausado', labelColor: 'var(--color-muted)' },
   expired: { dot: 'var(--color-red)', label: 'Expirado', labelColor: 'var(--color-red)' },
@@ -51,31 +51,31 @@ export default function AlertCard({ alert, onRefresh }) {
   return (
     <div
       onClick={() => navigate(`/alerts/${alert.id}`)}
-      className="card p-6 cursor-pointer group"
+      className="card p-5 sm:p-6 cursor-pointer group"
       style={alert.status === 'triggered' ? { borderColor: 'var(--color-green)', background: 'var(--color-green-soft)' } : {}}
     >
       {/* Header */}
-      <div className="flex items-start justify-between mb-4">
-        <div>
+      <div className="flex items-start justify-between mb-3 sm:mb-4">
+        <div className="min-w-0 flex-1">
           <h3 className="font-display text-lg" style={{ color: 'var(--color-ink)' }}>
             {alert.origin_display_code || alert.origin_name}
             <span className="mx-2 text-sm font-sans" style={{ color: 'var(--color-muted)' }}>para</span>
             {alert.dest_display_code || alert.dest_name}
           </h3>
-          <p className="text-sm mt-0.5" style={{ color: 'var(--color-ink-soft)' }}>
+          <p className="text-sm mt-0.5 truncate" style={{ color: 'var(--color-ink-soft)' }}>
             {alert.origin_name} — {alert.dest_name}
           </p>
         </div>
-        <div className="flex items-center gap-2 shrink-0">
+        <div className="flex items-center gap-1.5 shrink-0 ml-3">
           <div className="w-2 h-2 rounded-full" style={{ background: config.dot }} />
-          <span className="text-xs font-semibold" style={{ color: config.labelColor }}>
+          <span className="text-xs font-semibold hidden sm:inline" style={{ color: config.labelColor }}>
             {config.label}
           </span>
         </div>
       </div>
 
       {/* Meta */}
-      <div className="flex items-center gap-4 mb-5 text-sm" style={{ color: 'var(--color-muted)' }}>
+      <div className="flex items-center gap-3 sm:gap-4 mb-4 sm:mb-5 text-xs sm:text-sm" style={{ color: 'var(--color-muted)' }}>
         <span className="flex items-center gap-1.5">
           <Calendar className="w-3.5 h-3.5" />
           {formatDate(alert.depart_date)}
@@ -91,11 +91,11 @@ export default function AlertCard({ alert, onRefresh }) {
       <div className="flex items-end justify-between mb-4">
         <div>
           <div className="text-xs uppercase tracking-wider mb-1 font-semibold" style={{ color: 'var(--color-muted)', letterSpacing: '0.08em' }}>Atual</div>
-          <div className="font-display text-2xl" style={{ color: 'var(--color-ink)' }}>{formatPrice(alert.current_price)}</div>
+          <div className="font-display text-xl sm:text-2xl" style={{ color: 'var(--color-ink)' }}>{formatPrice(alert.current_price)}</div>
         </div>
         <div className="text-right">
           <div className="text-xs uppercase tracking-wider mb-1 font-semibold" style={{ color: 'var(--color-muted)', letterSpacing: '0.08em' }}>Alvo</div>
-          <div className="font-display text-2xl" style={{ color: 'var(--color-blue)' }}>{formatPrice(alert.target_price)}</div>
+          <div className="font-display text-xl sm:text-2xl" style={{ color: 'var(--color-rose)' }}>{formatPrice(alert.target_price)}</div>
         </div>
         {variation !== null && (
           <div className="text-right">
@@ -115,7 +115,7 @@ export default function AlertCard({ alert, onRefresh }) {
       )}
 
       {/* Footer */}
-      <div className="flex items-center justify-between pt-4" style={{ borderTop: '1px solid var(--color-border-light)' }}>
+      <div className="flex items-center justify-between pt-3 sm:pt-4" style={{ borderTop: '1px solid var(--color-border-light)' }}>
         <div className="flex gap-2">
           {(alert.status === 'active' || alert.status === 'paused' || alert.status === 'triggered') && (
             <button onClick={handlePauseResume} className="btn-ghost flex items-center gap-1.5 text-xs py-1.5 px-3">
