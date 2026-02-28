@@ -4,10 +4,10 @@ import SparklineChart from './SparklineChart';
 import api from '../services/api';
 
 const STATUS_CONFIG = {
-  active: { dot: 'var(--color-terracotta)', label: 'Monitorando', labelColor: 'var(--color-terracotta)' },
-  triggered: { dot: 'var(--color-sage)', label: 'Preco atingido!', labelColor: 'var(--color-sage)' },
-  paused: { dot: 'var(--color-faded)', label: 'Pausado', labelColor: 'var(--color-faded)' },
-  expired: { dot: '#b45555', label: 'Expirado', labelColor: '#b45555' },
+  active: { dot: 'var(--color-blue)', label: 'Monitorando', labelColor: 'var(--color-blue)' },
+  triggered: { dot: 'var(--color-green)', label: 'Preco atingido!', labelColor: 'var(--color-green)' },
+  paused: { dot: 'var(--color-muted)', label: 'Pausado', labelColor: 'var(--color-muted)' },
+  expired: { dot: 'var(--color-red)', label: 'Expirado', labelColor: 'var(--color-red)' },
 };
 
 function formatPrice(val) {
@@ -52,14 +52,14 @@ export default function AlertCard({ alert, onRefresh }) {
     <div
       onClick={() => navigate(`/alerts/${alert.id}`)}
       className="card p-6 cursor-pointer group"
-      style={alert.status === 'triggered' ? { borderColor: 'var(--color-sage)', background: 'var(--color-sage-light)' } : {}}
+      style={alert.status === 'triggered' ? { borderColor: 'var(--color-green)', background: 'var(--color-green-soft)' } : {}}
     >
       {/* Header */}
       <div className="flex items-start justify-between mb-4">
         <div>
-          <h3 className="font-display text-lg font-semibold" style={{ color: 'var(--color-ink)' }}>
+          <h3 className="font-display text-lg" style={{ color: 'var(--color-ink)' }}>
             {alert.origin_display_code || alert.origin_name}
-            <span className="mx-2 text-sm" style={{ color: 'var(--color-faded)' }}>para</span>
+            <span className="mx-2 text-sm font-sans" style={{ color: 'var(--color-muted)' }}>para</span>
             {alert.dest_display_code || alert.dest_name}
           </h3>
           <p className="text-sm mt-0.5" style={{ color: 'var(--color-ink-soft)' }}>
@@ -68,14 +68,14 @@ export default function AlertCard({ alert, onRefresh }) {
         </div>
         <div className="flex items-center gap-2 shrink-0">
           <div className="w-2 h-2 rounded-full" style={{ background: config.dot }} />
-          <span className="text-xs font-medium" style={{ color: config.labelColor }}>
+          <span className="text-xs font-semibold" style={{ color: config.labelColor }}>
             {config.label}
           </span>
         </div>
       </div>
 
-      {/* Meta row */}
-      <div className="flex items-center gap-4 mb-5 text-sm" style={{ color: 'var(--color-faded)' }}>
+      {/* Meta */}
+      <div className="flex items-center gap-4 mb-5 text-sm" style={{ color: 'var(--color-muted)' }}>
         <span className="flex items-center gap-1.5">
           <Calendar className="w-3.5 h-3.5" />
           {formatDate(alert.depart_date)}
@@ -90,24 +90,16 @@ export default function AlertCard({ alert, onRefresh }) {
       {/* Prices */}
       <div className="flex items-end justify-between mb-4">
         <div>
-          <div className="text-xs uppercase tracking-wider mb-1" style={{ color: 'var(--color-faded)', letterSpacing: '0.08em' }}>
-            Atual
-          </div>
-          <div className="font-display text-2xl font-bold" style={{ color: 'var(--color-ink)' }}>
-            {formatPrice(alert.current_price)}
-          </div>
+          <div className="text-xs uppercase tracking-wider mb-1 font-semibold" style={{ color: 'var(--color-muted)', letterSpacing: '0.08em' }}>Atual</div>
+          <div className="font-display text-2xl" style={{ color: 'var(--color-ink)' }}>{formatPrice(alert.current_price)}</div>
         </div>
         <div className="text-right">
-          <div className="text-xs uppercase tracking-wider mb-1" style={{ color: 'var(--color-faded)', letterSpacing: '0.08em' }}>
-            Alvo
-          </div>
-          <div className="font-display text-2xl font-bold" style={{ color: 'var(--color-terracotta)' }}>
-            {formatPrice(alert.target_price)}
-          </div>
+          <div className="text-xs uppercase tracking-wider mb-1 font-semibold" style={{ color: 'var(--color-muted)', letterSpacing: '0.08em' }}>Alvo</div>
+          <div className="font-display text-2xl" style={{ color: 'var(--color-blue)' }}>{formatPrice(alert.target_price)}</div>
         </div>
         {variation !== null && (
           <div className="text-right">
-            <div className={`flex items-center gap-1 text-sm font-medium ${variation <= 0 ? 'text-green-700' : 'text-red-600'}`}>
+            <div className={`flex items-center gap-1 text-sm font-semibold ${variation <= 0 ? 'text-emerald-600' : 'text-red-500'}`}>
               {variation <= 0 ? <TrendingDown className="w-3.5 h-3.5" /> : <TrendingUp className="w-3.5 h-3.5" />}
               {variation > 0 ? '+' : ''}{variation.toFixed(1)}%
             </div>
@@ -123,7 +115,7 @@ export default function AlertCard({ alert, onRefresh }) {
       )}
 
       {/* Footer */}
-      <div className="flex items-center justify-between pt-4" style={{ borderTop: '1px solid var(--color-sand-dark)' }}>
+      <div className="flex items-center justify-between pt-4" style={{ borderTop: '1px solid var(--color-border-light)' }}>
         <div className="flex gap-2">
           {(alert.status === 'active' || alert.status === 'paused' || alert.status === 'triggered') && (
             <button onClick={handlePauseResume} className="btn-ghost flex items-center gap-1.5 text-xs py-1.5 px-3">
@@ -131,11 +123,11 @@ export default function AlertCard({ alert, onRefresh }) {
               {alert.status === 'paused' || alert.status === 'triggered' ? 'Reativar' : 'Pausar'}
             </button>
           )}
-          <button onClick={handleDelete} className="btn-ghost flex items-center gap-1.5 text-xs py-1.5 px-3" style={{ color: '#b45555', borderColor: 'transparent' }}>
+          <button onClick={handleDelete} className="btn-ghost flex items-center gap-1.5 text-xs py-1.5 px-3" style={{ color: 'var(--color-red)', borderColor: 'transparent' }}>
             <Trash2 className="w-3 h-3" />
           </button>
         </div>
-        <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" style={{ color: 'var(--color-faded)' }} />
+        <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" style={{ color: 'var(--color-muted)' }} />
       </div>
     </div>
   );

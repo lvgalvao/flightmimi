@@ -9,19 +9,19 @@ export default function App() {
   return (
     <BrowserRouter>
       <div className="min-h-screen">
-        <header className="sticky top-0 z-40 backdrop-blur-md" style={{ background: 'rgba(245, 240, 232, 0.85)' }}>
+        <header className="sticky top-0 z-40 backdrop-blur-md" style={{ background: 'rgba(240, 244, 248, 0.85)' }}>
           <div className="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
             <a href="/" className="flex items-center gap-3 group">
-              <div className="w-9 h-9 rounded-full flex items-center justify-center transition-transform group-hover:rotate-45 duration-500" style={{ background: 'var(--color-terracotta)' }}>
+              <div className="w-9 h-9 rounded-full flex items-center justify-center transition-transform group-hover:rotate-45 duration-500" style={{ background: 'var(--color-blue)' }}>
                 <Compass className="w-5 h-5 text-white" />
               </div>
-              <span className="font-display text-xl font-semibold tracking-tight" style={{ color: 'var(--color-ink)' }}>
+              <span className="font-display text-xl" style={{ color: 'var(--color-ink)' }}>
                 A Outra Jornada
               </span>
             </a>
             <NotificationBadge />
           </div>
-          <div className="h-px" style={{ background: 'linear-gradient(to right, transparent, var(--color-sand-dark), transparent)' }} />
+          <div className="h-px" style={{ background: 'linear-gradient(to right, transparent, var(--color-border), transparent)' }} />
         </header>
 
         <main className="max-w-5xl mx-auto px-6 py-10">

@@ -72,7 +72,7 @@ export default function AirportSearch({ value, onChange, placeholder }) {
   return (
     <div ref={wrapperRef} className="relative">
       <div className="relative">
-        <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: 'var(--color-faded)' }} />
+        <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: 'var(--color-muted)' }} />
         <input
           type="text"
           value={query}
@@ -93,23 +93,19 @@ export default function AirportSearch({ value, onChange, placeholder }) {
           {results.map((item, i) => {
             const { title, subtitle, isCity } = displayItem(item);
             return (
-              <li
-                key={i}
-                onClick={() => handleSelect(item)}
-                className="dropdown-item flex items-center gap-3"
-              >
+              <li key={i} onClick={() => handleSelect(item)} className="dropdown-item flex items-center gap-3">
                 {isCity ? (
-                  <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0" style={{ background: 'var(--color-sand)' }}>
-                    <Building2 className="w-4 h-4" style={{ color: 'var(--color-ochre)' }} />
+                  <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0" style={{ background: 'var(--color-blue-wash)' }}>
+                    <Building2 className="w-4 h-4" style={{ color: 'var(--color-sky)' }} />
                   </div>
                 ) : (
-                  <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0" style={{ background: 'var(--color-sand)' }}>
-                    <Plane className="w-4 h-4" style={{ color: 'var(--color-terracotta)' }} />
+                  <div className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0" style={{ background: 'var(--color-blue-wash)' }}>
+                    <Plane className="w-4 h-4" style={{ color: 'var(--color-blue)' }} />
                   </div>
                 )}
                 <div>
                   <div className="font-medium text-sm" style={{ color: 'var(--color-ink)' }}>{title}</div>
-                  {subtitle && <div className="text-xs" style={{ color: 'var(--color-faded)' }}>{subtitle}</div>}
+                  {subtitle && <div className="text-xs" style={{ color: 'var(--color-muted)' }}>{subtitle}</div>}
                 </div>
               </li>
             );
