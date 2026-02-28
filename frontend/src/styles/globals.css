@@ -94,11 +94,14 @@ body {
   border: 1.5px solid var(--color-border);
   border-radius: 12px;
   padding: 11px 16px;
+  height: 46px;
   font-family: 'Plus Jakarta Sans', sans-serif;
   font-size: 0.9375rem;
+  line-height: 1.4;
   color: var(--color-ink);
   transition: all 0.2s ease;
   width: 100%;
+  box-sizing: border-box;
   outline: none;
 }
 

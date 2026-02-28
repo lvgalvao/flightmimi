@@ -20,6 +20,7 @@ export default function PriceHistoryTable({ history }) {
             <th className="text-right py-3 px-4 text-xs uppercase tracking-wider font-semibold" style={{ color: 'var(--color-muted)', letterSpacing: '0.08em' }}>Variacao</th>
             <th className="text-left py-3 px-4 text-xs uppercase tracking-wider font-semibold" style={{ color: 'var(--color-muted)', letterSpacing: '0.08em' }}>Companhia</th>
             <th className="text-center py-3 px-4 text-xs uppercase tracking-wider font-semibold" style={{ color: 'var(--color-muted)', letterSpacing: '0.08em' }}>Paradas</th>
+            <th className="text-left py-3 px-4 text-xs uppercase tracking-wider font-semibold" style={{ color: 'var(--color-muted)', letterSpacing: '0.08em' }}>Obs</th>
           </tr>
         </thead>
         <tbody>
@@ -45,6 +46,7 @@ export default function PriceHistoryTable({ history }) {
                 </td>
                 <td className="py-3.5 px-4" style={{ color: 'var(--color-ink-soft)' }}>{item.cheapest_airline || '—'}</td>
                 <td className="py-3.5 px-4 text-center" style={{ color: 'var(--color-ink-soft)' }}>{item.stops === 0 ? 'Direto' : item.stops != null ? `${item.stops}` : '—'}</td>
+                <td className="py-3.5 px-4 text-xs" style={{ color: 'var(--color-muted)' }}>{item.raw_summary || ''}</td>
               </tr>
             );
           })}

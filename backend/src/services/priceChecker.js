@@ -1,6 +1,12 @@
 const flightSearchApi = require('./flightSearchApi');
 const queries = require('../db/queries');
 
+function shiftDate(dateStr, days) {
+  const d = new Date(dateStr + 'T00:00:00');
+  d.setDate(d.getDate() + days);
+  return d.toISOString().split('T')[0];
+}
+
 function extractCheapest(result) {
   let items = [];
 
@@ -47,20 +53,57 @@ module.exports = {
 
   async checkAlert(alert) {
     const searchFn = alert.return_date ? 'searchRoundtrip' : 'searchOneWay';
-    const params = {
-      fromEntityId: alert.origin_entity_id,
-      toEntityId: alert.dest_entity_id,
-      departDate: alert.depart_date,
-      adults: alert.passengers,
-      cabinClass: alert.cabin_class,
-      currency: alert.currency,
-    };
-    if (alert.return_date) {
-      params.returnDate = alert.return_date;
+
+    function buildParams(departDate, returnDate) {
+      const params = {
+        fromEntityId: alert.origin_entity_id,
+        toEntityId: alert.dest_entity_id,
+        departDate,
+        adults: alert.passengers,
+        cabinClass: alert.cabin_class,
+        currency: alert.currency,
+      };
+      if (returnDate) params.returnDate = returnDate;
+      return params;
     }
 
+    // Try exact dates first
+    const params = buildParams(alert.depart_date, alert.return_date);
     const result = await flightSearchApi[searchFn](params);
-    const cheapest = extractCheapest(result);
+    let cheapest = extractCheapest(result);
+    let approxInfo = null;
+
+    // Fallback: try nearby dates (±1 to ±3 days) if no results
+    if (!cheapest) {
+      console.log(`[PRICE] No results for exact dates, trying approximate dates for alert ${alert.id}`);
+      const offsets = [-1, 1, -2, 2, -3, 3];
+      const today = new Date().toISOString().split('T')[0];
+
+      for (const offset of offsets) {
+        const altDepart = shiftDate(alert.depart_date, offset);
+        if (altDepart < today) continue; // skip past dates
+
+        const altReturn = alert.return_date ? shiftDate(alert.return_date, offset) : null;
+        if (altReturn && altReturn < altDepart) continue;
+
+        try {
+          const altParams = buildParams(altDepart, altReturn);
+          const altResult = await flightSearchApi[searchFn](altParams);
+          const altCheapest = extractCheapest(altResult);
+          if (altCheapest) {
+            cheapest = altCheapest;
+            approxInfo = { departDate: altDepart, returnDate: altReturn, offsetDays: offset };
+            console.log(`[PRICE] Found result with offset ${offset > 0 ? '+' : ''}${offset} day(s): R$ ${altCheapest.price}`);
+            break;
+          }
+        } catch (err) {
+          console.error(`[PRICE] Approx search offset ${offset} failed:`, err.message);
+        }
+
+        // Small delay between API calls
+        await new Promise((r) => setTimeout(r, 1500));
+      }
+    }
 
     if (!cheapest) {
       queries.addPriceHistory(alert.id, {
@@ -69,10 +112,14 @@ module.exports = {
         flightNumbers: null,
         stops: null,
         bucketType: null,
-        rawSummary: 'No results found',
+        rawSummary: 'Nenhum resultado encontrado (incluindo datas próximas)',
       });
       return null;
     }
+
+    const summary = approxInfo
+      ? `Aproximado: ${approxInfo.offsetDays > 0 ? '+' : ''}${approxInfo.offsetDays} dia(s) (${approxInfo.departDate}${approxInfo.returnDate ? ' — ' + approxInfo.returnDate : ''})`
+      : null;
 
     queries.addPriceHistory(alert.id, {
       price: cheapest.price,
@@ -80,7 +127,7 @@ module.exports = {
       flightNumbers: cheapest.flightNumbers,
       stops: cheapest.stops,
       bucketType: cheapest.bucketType,
-      rawSummary: null,
+      rawSummary: summary,
     });
 
     queries.updateAlertPrice(alert.id, cheapest.price);
@@ -93,6 +140,6 @@ module.exports = {
       triggered = true;
     }
 
-    return { ...cheapest, triggered };
+    return { ...cheapest, triggered, approxInfo };
   },
 };

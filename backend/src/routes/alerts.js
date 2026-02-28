@@ -141,6 +141,7 @@ router.post('/:id/check', async (req, res, next) => {
       previousPrice,
       variation: variation ? parseFloat(variation) : null,
       triggered: result?.triggered || false,
+      approxInfo: result?.approxInfo || null,
     });
   } catch (err) {
     next(err);

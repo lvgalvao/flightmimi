@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, MapPin, Calendar, Target, Users, Armchair } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import AirportSearch from '../components/AirportSearch';
 import api from '../services/api';
 
@@ -65,10 +65,7 @@ export default function CreateAlert() {
 
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="card p-6 animate-fade-up stagger-2">
-          <div className="flex items-center gap-2 mb-5">
-            <MapPin className="w-4 h-4" style={{ color: 'var(--color-blue)' }} />
-            <span className="text-xs uppercase tracking-wider font-semibold" style={{ color: 'var(--color-blue)', letterSpacing: '0.08em' }}>Rota</span>
-          </div>
+          <span className="text-xs uppercase tracking-wider font-semibold block mb-5" style={{ color: 'var(--color-blue)', letterSpacing: '0.08em' }}>Rota</span>
           <div className="space-y-4">
             <div>
               <label className="block text-sm font-medium mb-2" style={{ color: 'var(--color-ink-soft)' }}>Origem</label>
@@ -87,10 +84,7 @@ export default function CreateAlert() {
         </div>
 
         <div className="card p-6 animate-fade-up stagger-3">
-          <div className="flex items-center gap-2 mb-5">
-            <Calendar className="w-4 h-4" style={{ color: 'var(--color-blue)' }} />
-            <span className="text-xs uppercase tracking-wider font-semibold" style={{ color: 'var(--color-blue)', letterSpacing: '0.08em' }}>Datas</span>
-          </div>
+          <span className="text-xs uppercase tracking-wider font-semibold block mb-5" style={{ color: 'var(--color-blue)', letterSpacing: '0.08em' }}>Datas</span>
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium mb-2" style={{ color: 'var(--color-ink-soft)' }}>Ida</label>
@@ -105,13 +99,9 @@ export default function CreateAlert() {
         </div>
 
         <div className="card p-6 animate-fade-up stagger-4">
-          <div className="flex items-center gap-2 mb-5">
-            <Target className="w-4 h-4" style={{ color: 'var(--color-blue)' }} />
-            <span className="text-xs uppercase tracking-wider font-semibold" style={{ color: 'var(--color-blue)', letterSpacing: '0.08em' }}>Preco Alvo</span>
-          </div>
-          <div className="relative">
-            <span className="absolute left-4 top-1/2 -translate-y-1/2 font-display" style={{ color: 'var(--color-muted)' }}>R$</span>
-            <input type="number" value={targetPrice} onChange={(e) => setTargetPrice(e.target.value)} placeholder="3.200" min="1" step="1" className="input-field pl-12 font-display text-xl" />
+          <span className="text-xs uppercase tracking-wider font-semibold block mb-5" style={{ color: 'var(--color-blue)', letterSpacing: '0.08em' }}>Preco Alvo (R$)</span>
+          <div>
+            <input type="number" value={targetPrice} onChange={(e) => setTargetPrice(e.target.value)} placeholder="3200" min="1" step="1" className="input-field font-display text-xl" />
           </div>
           <p className="text-xs mt-2" style={{ color: 'var(--color-muted)' }}>Total para {passengers} passageiro{passengers > 1 ? 's' : ''}. Voce sera notificado quando o preco atingir esse valor.</p>
         </div>
@@ -119,19 +109,13 @@ export default function CreateAlert() {
         <div className="card p-6 animate-fade-up stagger-5">
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <div className="flex items-center gap-2 mb-3">
-                <Armchair className="w-3.5 h-3.5" style={{ color: 'var(--color-muted)' }} />
-                <label className="text-sm font-medium" style={{ color: 'var(--color-ink-soft)' }}>Classe</label>
-              </div>
+              <label className="block text-sm font-medium mb-3" style={{ color: 'var(--color-ink-soft)' }}>Classe</label>
               <select value={cabinClass} onChange={(e) => setCabinClass(e.target.value)} className="input-field">
                 {Object.entries(cabinLabels).map(([v, l]) => <option key={v} value={v}>{l}</option>)}
               </select>
             </div>
             <div>
-              <div className="flex items-center gap-2 mb-3">
-                <Users className="w-3.5 h-3.5" style={{ color: 'var(--color-muted)' }} />
-                <label className="text-sm font-medium" style={{ color: 'var(--color-ink-soft)' }}>Passageiros</label>
-              </div>
+              <label className="block text-sm font-medium mb-3" style={{ color: 'var(--color-ink-soft)' }}>Passageiros</label>
               <select value={passengers} onChange={(e) => setPassengers(parseInt(e.target.value))} className="input-field">
                 {[1, 2, 3, 4, 5, 6].map((n) => <option key={n} value={n}>{n}</option>)}
               </select>
